@@ -1,0 +1,16 @@
+.shedule{
+    padding: 20px;
+    border: 2px solid #000000;
+}
+.days{
+    padding: 5px;
+}
+.perMinutes{
+    padding: 5px;
+}
+.time{
+    padding: 5px;
+}
+.perMonth{
+    padding: 5px;
+}
