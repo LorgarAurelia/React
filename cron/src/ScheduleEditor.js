@@ -5,8 +5,12 @@ function ScheduleWindow()
 {
     const [cronCommand, generateCron] = useState();
 
-    const [scheduleType, setSheduleType] = useState();
-    const onOptionChange = e => {setSheduleType(e.target.value)};
+    const [monthName, setMonthName] = useState('perMonth');
+
+    const [scheduleType, setSheduleType] = useState('');
+    const onOptionChange = e => {
+        setSheduleType(e.target.value)
+    };
 
     const [minutes, setMinutes] = useState();
     const changeMinutes = e => {
@@ -20,7 +24,7 @@ function ScheduleWindow()
         setTime(`0 ${result[0]} ${result[1]}`);
     }
 
-    const [daysOfWeek, setDays] = useState('');
+    const [daysOfWeek, setDays] = useState();
     const addDay = e => {
         if(e.target.checked){
             if(daysOfWeek === ''){
@@ -60,8 +64,8 @@ function ScheduleWindow()
         }
     }
 
-    function isValid(a){
-        if(a > 0){
+    function isValid(int){
+        if(int > 0){
             return true;
         }
         else {
@@ -131,8 +135,8 @@ function ScheduleWindow()
                     <input type="number" name="minutes" onChange={changeMinutes} />
                     <label>minutes</label>
                 </div>
-                <div className='perMonth'>
-                    Day<input type="number" name="day" onChange={changeDay}/>of every month
+                <div className={monthName}>
+                    Day<input type="number" name="day" onChange={changeDay} />of every month
                 </div>
                 <div className='additionalHour'>
                     Additional start hour <input type="number" name="additionalHour" onChange={changeHour}/>
@@ -142,14 +146,12 @@ function ScheduleWindow()
                 <button onClick={saveToCron}> Save </button>
                 <button> Load </button>
             </div>
-            <div>
+            <div className='cronCommand'>
                 <input type="text" name='cronCommand' value={cronCommand} />
-                <p>{minutes}</p>
             </div>
         </div>
         
     )
 }
-
 
 export default ScheduleWindow;
