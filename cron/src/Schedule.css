@@ -1,40 +1,42 @@
 .shedule{
     padding: 20px;
     border: 2px solid #000000;
-    height: 200px;
+    height: 120px;
     width: 600px;
     margin-top: 10%;
     margin-left: 30%;
 }
-.days{
+.daysSelector{
     padding: 5px;
 }
-.days-inactive{
+.daysSelector-inactive{
     display: none;
 }
-.perMinutes{
+.minutesSelector{
     padding: 5px;
 }
-.perMinutes{
+.minutesSelector-inactive{
     display: none;
 }
-.time{
+.timeSelector{
     padding: 5px;
 }
-.time{
+.timeSelector-inactive{
     display: none;
 }
-.perMonth{
-    
+.dateSelector{
     padding: 5px;
 }
-.perMonth-inactive{
+.dateSelector-inactive{
+    display: none;
+}
+.hourSelector{
+    padding: 5x;
+}
+.hourSelector-inactive{
     display: none;
 }
 .buttons{
     margin-top: 5%;
-    margin-left: 30%;
-}
-.cronCommand{
     margin-left: 30%;
 }

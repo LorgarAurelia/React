@@ -1,15 +1,10 @@
-import './Schedule.css';
+import Buttons from './CronSaver';
 import { useState } from 'react';
 
-function ScheduleWindow() 
+function ScheduleWindow(props) 
 {
-    const [cronCommand, generateCron] = useState();
-
-    const [monthName, setMonthName] = useState('perMonth');
-
-    const [scheduleType, setSheduleType] = useState('');
     const onOptionChange = e => {
-        setSheduleType(e.target.value)
+        props.onChange(e.target.value);
     };
 
     const [minutes, setMinutes] = useState();
@@ -24,7 +19,7 @@ function ScheduleWindow()
         setTime(`0 ${result[0]} ${result[1]}`);
     }
 
-    const [daysOfWeek, setDays] = useState();
+    const [daysOfWeek, setDays] = useState('');
     const addDay = e => {
         if(e.target.checked){
             if(daysOfWeek === ''){
@@ -36,9 +31,9 @@ function ScheduleWindow()
         }
         else{
             if(daysOfWeek.substring(daysOfWeek.length - 4) === ',' + e.target.value){
-                setDays(daysOfWeek.replace(',' + e.target.value, ''));
+                setDays(daysOfWeek.replace(`,${e.target.value}`, ''));
             }
-            if(daysOfWeek.substring(daysOfWeek.length - 3) === e.target.value){
+            else if(daysOfWeek.substring(daysOfWeek.length - 3) === e.target.value){
                 setDays(daysOfWeek.replace(e.target.value, ''));
             }
             else{
@@ -49,12 +44,13 @@ function ScheduleWindow()
 
     const [day, setDay] = useState();
     const changeDay = e => {
-        if(isValid(e.target.value)){
+        if(isValid(e.target.value) && e.target.value < 32){
             if(e.target.value > 28){
                 alert("Process wouldn't work in some months!");
             }
             setDay(e.target.value);
         }
+        else{alert('No more than 31 days in a month!')}
     }
 
     const [hour, setHour] = useState();
@@ -69,28 +65,8 @@ function ScheduleWindow()
             return true;
         }
         else {
-            alert("Value must be positive!")
+            alert("Unacceptable value!")
             return false;
-        }
-    }
-
-    function saveToCron(){
-        switch (scheduleType){
-            default:
-                alert("Please, choose the schedule type!");
-                break;
-            case 'perMinutes':
-                generateCron(`0 0/${minutes} * 1/1 * ? *`);
-                break;
-            case 'weekly':
-                generateCron(`${time} ? * ${daysOfWeek} *`)
-                break;
-            case 'eachMonth':
-                generateCron(`${time} ${day} 1/1 ? *`);
-                break;
-            case 'everyDay':
-                if(hour > 0) { generateCron(`${time},${hour} * * *`);}
-                else {generateCron(`${time} * * *`)}
         }
     }
     
@@ -117,8 +93,8 @@ function ScheduleWindow()
                         </label>
                     </p>
                 </div>
-                <label> Days</label>
-                <div className='days'>
+                <label className={props.daysSelector}> Days</label>
+                <div className={props.daysSelector}>
                     <input type="checkbox" value="MON" onChange={addDay}/> Monday 
                     <input type="checkbox" value="TUE" onChange={addDay}/> Tuesday 
                     <input type="checkbox" value="WED" onChange={addDay}/> Wednesday
@@ -127,28 +103,22 @@ function ScheduleWindow()
                     <input type="checkbox" value="SAT" onChange={addDay}/> Saturday
                     <input type="checkbox" value="SUN" onChange={addDay}/> Sunday
                 </div>
-                <div className='time'>
+                <div className={props.timeSelector}>
                     At <input type="time" name="scheduleTime"  onChange={changeTime}/>
                 </div>
-                <div className='perMinutes'>
+                <div className={props.minutesSelector}>
                     <label>Every</label>
                     <input type="number" name="minutes" onChange={changeMinutes} />
                     <label>minutes</label>
                 </div>
-                <div className={monthName}>
+                <div className={props.dateSelector}>
                     Day<input type="number" name="day" onChange={changeDay} />of every month
                 </div>
-                <div className='additionalHour'>
+                <div className={props.hourSelector}>
                     Additional start hour <input type="number" name="additionalHour" onChange={changeHour}/>
                 </div>
             </div>
-            <div className='buttons'>
-                <button onClick={saveToCron}> Save </button>
-                <button> Load </button>
-            </div>
-            <div className='cronCommand'>
-                <input type="text" name='cronCommand' value={cronCommand} />
-            </div>
+            <Buttons scheduleType = {props.scheduleType} minutes  = {minutes}  time = {time} daysOfWeek = {daysOfWeek} day = {day} hour = {hour}/>
         </div>
         
     )
