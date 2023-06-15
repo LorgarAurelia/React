@@ -1,5 +1,11 @@
 import Buttons from './CronSaver';
 import { useState } from 'react';
+import Grid from '@mui/material/Grid';
+import Radio from '@mui/material/Radio';
+import RadioGroup from '@mui/material/RadioGroup';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import FormControl from '@mui/material/FormControl';
+import FormLabel from '@mui/material/FormLabel';
 
 function ScheduleWindow(props) 
 {
@@ -55,9 +61,10 @@ function ScheduleWindow(props)
 
     const [hour, setHour] = useState();
     const changeHour = e =>{
-        if(isValid(e.target.value)){
+        if(e.target.value > -1 && e.target.value < 25){
             setHour(e.target.value);
         }
+        else{alert('No more than 24 hours in a day')}
     }
 
     function isValid(int){
@@ -72,28 +79,16 @@ function ScheduleWindow(props)
     
     return(
         <div>
-            <div className="shedule">
-                <div className='options'>
-                    <p>
-                        <label>
-                            <input type="radio" name='scheduleType' value='perMinutes' onChange={onOptionChange}/>
-                            Each N Minutes
-                        </label>
-                        <label>
-                            <input type="radio" name='scheduleType' value='weekly' onChange={onOptionChange}/>
-                            Weekly
-                        </label>
-                        <label>
-                            <input type="radio" name='scheduleType' value='everyDay' onChange={onOptionChange}/>
-                            Everyday
-                        </label>
-                        <label>
-                            <input type="radio" name='scheduleType' value='eachMonth' onChange={onOptionChange}/>
-                            Each Month
-                        </label>
-                    </p>
-                </div>
-                <label className={props.daysSelector}> Days</label>
+            <Grid className="shedule" direction="column">
+                <FormControl className='options'>
+                <FormLabel>Schedule Type</FormLabel>
+                    <RadioGroup row onChange={onOptionChange}>
+                        <FormControlLabel value='perMinutes' control={<Radio />} label='Each N Minutes'/>
+                        <FormControlLabel value='weekly' control={<Radio/>} label='Weekly'/>
+                        <FormControlLabel value='everyDay' control={<Radio/>} label='Everyday'/>
+                        <FormControlLabel value='eachMonth' control={<Radio/>} label='Each Month'/>
+                    </RadioGroup>
+                </FormControl>
                 <div className={props.daysSelector}>
                     <input type="checkbox" value="MON" onChange={addDay}/> Monday 
                     <input type="checkbox" value="TUE" onChange={addDay}/> Tuesday 
@@ -117,7 +112,7 @@ function ScheduleWindow(props)
                 <div className={props.hourSelector}>
                     Additional start hour <input type="number" name="additionalHour" onChange={changeHour}/>
                 </div>
-            </div>
+            </Grid>
             <Buttons scheduleType = {props.scheduleType} minutes  = {minutes}  time = {time} daysOfWeek = {daysOfWeek} day = {day} hour = {hour}/>
         </div>
         
