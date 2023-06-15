@@ -1,5 +1,7 @@
 import React from "react";
 import { useState } from "react";
+import Button from "@mui/material/Button";
+import TextField from "@mui/material/TextField";
 
 export default function Buttons(props){
     const [cronCommand, generateCron] = useState();
@@ -25,8 +27,8 @@ export default function Buttons(props){
     }
     return (
         <div className='buttons'>
-                <button onClick={saveToCron}> Save </button>
-                <input type="text" name='cronCommand' value={cronCommand} />
+                <Button variant="contained" onClick={saveToCron} sx={{m:1}}> Save </Button>
+                <TextField id='cronCommand' size="small" value={cronCommand} sx={{m:1, width:'43ch'}}/>
         </div>
     )
 }
